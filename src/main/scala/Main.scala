@@ -26,7 +26,7 @@ object Main {
 
     }catch {
       case t:Throwable => {
-
+      	   t.printStackTrace()
       }
     }
   }
