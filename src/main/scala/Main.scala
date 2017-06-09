@@ -1,5 +1,5 @@
 import java.io.File
-import java.util.logging.Logger
+import java.util.logging.{Level, Logger}
 
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.webapp.WebAppContext
@@ -26,7 +26,7 @@ object Main {
 
     }catch {
       case t:Throwable => {
-      	   t.printStackTrace()
+        logger.log(Level.SEVERE, "", t)
       }
     }
   }
