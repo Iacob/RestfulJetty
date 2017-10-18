@@ -6,6 +6,7 @@ scalaVersion := "2.12.3"
 
 val workaround = {
   sys.props += "packaging.type" -> "jar"
+  ()
 }
 
 libraryDependencies += "org.eclipse.jetty" % "jetty-servlet" % "9.4.7.v20170914"
