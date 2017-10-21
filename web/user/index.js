@@ -10,6 +10,11 @@ $(function() {
             type: 'POST',
             data: {key1 : "value1"}
         },
-        searching: true
+        searching: true,
+        "columns": [
+            { "orderable": true },
+            { "orderable": false },
+            { "orderable": false },
+          ]
     });
 })
