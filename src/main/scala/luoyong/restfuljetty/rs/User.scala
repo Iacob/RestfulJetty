@@ -1,12 +1,15 @@
 package luoyong.restfuljetty.rs
 
+import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
 import javax.ws.rs._
-import collection.JavaConverters._
 
+import collection.JavaConverters._
 import org.apache.commons.io.IOUtils
+
+import scala.collection.mutable
 
 /**
   *
@@ -26,6 +29,9 @@ class User {
 
     val req = IOUtils.toString(request.getInputStream, StandardCharsets.UTF_8)
     println(req)
+
+    val formKv = extractForm(req)
+    println(formKv.toString())
 
     return """
 
@@ -53,5 +59,23 @@ class User {
       ]
     }
       """
+  }
+
+  def extractForm(formStr:String):Map[String, String] = {
+    val formKv = formStr.split("&")
+    val result:mutable.HashMap[String, String] = new mutable.HashMap[String, String]()
+    formKv.foreach((kvStr) => {
+      val kvArr = kvStr.split("=")
+      if (kvArr.length > 1) {
+        result.put(decodeUrl(kvArr(0)), kvArr(1))
+      }else {
+        result.put(decodeUrl(kvArr(0)), "")
+      }
+    })
+    return result.toMap
+  }
+
+  def decodeUrl(str:String):String = {
+    return URLDecoder.decode(str, StandardCharsets.UTF_8.name())
   }
 }

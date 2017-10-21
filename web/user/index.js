@@ -9,6 +9,7 @@ $(function() {
             url: '../api/user/list',
             type: 'POST',
             data: {key1 : "value1"}
-        }
+        },
+        searching: true
     });
 })
