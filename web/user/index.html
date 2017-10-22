@@ -3,30 +3,115 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   <link rel="stylesheet" type="text/css" href="../res/components/datatables/media/css/jquery.dataTables.css">
+  <link rel="stylesheet" type="text/css" href="../res/components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../res/components/bootstrap/dist/css/bootstrap-theme.css">
+  <link rel="stylesheet" type="text/css" href="../res/components/jquery-loading/dist/jquery.loading.min.css">
   <script type="text/javascript" src="../res/components/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="../res/components/datatables/media/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="../res/components/popper.js/dist/umd/popper.min.js"></script>
+  <script type="text/javascript" src="../res/components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../res/components/jquery-loading/dist/jquery.loading.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <title>list 列表页</title>
+
+
 </head>
 <body>
+
   <table id="example" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Full Name</th>
-                <th>Description</th>
+                <th>用户名</th>
+                <th>姓名</th>
+                <th>描述</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Name</th>
-                <th>Full Name</th>
-                <th>Description</th>
+                <th>用户名</th>
+                <th>姓名</th>
+                <th>描述</th>
+                <th>操作</th>
             </tr>
         </tfoot>
         <tbody>
 
         </tbody>
     </table>
+
+  <br />
+  <div>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mm-edit-user-space"> + 增加用户 </button>
+  </div>
+
+  <div class="modal fade" id="mm-edit-user-space" data-backdrop="static" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="mm-edit-user-space-label">用户信息</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                      <label for="mm-edit-user-space-username">用户名</label>
+                      <input type="text" class="form-control" id="mm-edit-user-space-username" aria-describedby="emailHelp" placeholder="">
+                      <div class="invalid-feedback">Please provide a valid username.</div>
+                  </div>
+                  <div class="form-group">
+                      <label for="mm-edit-user-space-password">密码</label>
+                      <input type="password" class="form-control" id="mm-edit-user-space-password" aria-describedby="emailHelp" placeholder="">
+                      <small id="mm-edit-user-space-password-help" class="form-text text-muted">密码不能为空</small>
+                      <div class="invalid-feedback">Please provide a valid password.</div>
+                  </div>
+                  <div class="form-group">
+                      <label for="mm-edit-user-space-name">用户姓名</label>
+                      <input type="text" class="form-control" id="mm-edit-user-space-name" aria-describedby="emailHelp" placeholder="">
+                      <small id="mm-edit-user-space-name-help" class="form-text text-muted invalid-feedback">We'll never share your email with anyone else.</small>
+                  </div>
+                  <div class="form-group">
+                      <label for="mm-edit-user-space-info">介绍</label>
+                      <input type="text" class="form-control" id="mm-edit-user-space-info" aria-describedby="emailHelp" placeholder="">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                  <button type="button" class="btn btn-primary" onclick="Public.ui_action_save_user();">保存</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="mm-delete-user-dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">是否删除用户</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  请确认是否删除用户
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">否</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="Public.ui_action_delete_user();">是</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!--
+  <button type="button" class="btn btn-primary" onclick="Public.reload();">
+      reload
+  </button>
+  <button type="button" class="btn btn-primary" onclick="Public.refresh();">
+      refresh
+  </button>
+  -->
+
 </body>
 </html>

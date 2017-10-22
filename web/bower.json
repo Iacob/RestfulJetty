@@ -17,10 +17,12 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "4.0.0-beta",
     "jquery-ui": "^1.12.1",
     "datatables-i18n": "^1.0.4",
     "datatables": "datatable#^1.10.16",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "popper.js" : "1.12.5",
+    "jquery-loading" : ""
   }
 }
