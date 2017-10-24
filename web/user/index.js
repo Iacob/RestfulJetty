@@ -41,16 +41,37 @@ window.Public.ui_action_save_user = function() {
     postObj.name = $("#mm-edit-user-space").find("#mm-edit-user-space-name").val();
     postObj.info = $("#mm-edit-user-space").find("#mm-edit-user-space-info").val();
 
-    var postStr = JSON.stringify(postObj);
-    //alert(postStr);
+    var user_id = $("#mm-edit-user-space").find("#mm-edit-user-space-user-id").val();
+    if (S(user_id).isEmpty()) {
+        var postStr = JSON.stringify(postObj);
+        $.post('../api/user/add', postStr, function(data, textStatus, jqXHR) {
+                console.log(data);
+            }, 'json').always(function() {
+                $('#mm-edit-user-space').modal('hide');
+                Public.refresh();
+                Public.hide_loading();
+            });
+    }else {
+        user_id = Number(user_id)
+        if (!Number.isNaN(user_id)) {
+            postObj.id = user_id;
+            var postStr = JSON.stringify(postObj);
+            $.post('../api/user/edit', postStr, function(data, textStatus, jqXHR) {
+                console.log(data);
+            }, 'json').always(function() {
+                $('#mm-edit-user-space').modal('hide');
+                Public.refresh();
+                Public.hide_loading();
+            });
+        }else {
+            $('#mm-edit-user-space').modal('hide');
+            Public.refresh();
+            Public.hide_loading();
+        }
 
-    $.post('../api/user/add', postStr, function(data, textStatus, jqXHR) {
-        console.log(data);
-    }, 'json').always(function() {
-        $('#mm-edit-user-space').modal('hide');
-        Public.refresh();
-        Public.hide_loading();
-    });
+    }
+
+
 }
 window.Public.ui_action_show_edit_user_form = function(element, event) {
     Public.show_loading();

@@ -2,7 +2,7 @@ package luoyong.restfuljetty.db
 
 import scala.collection.mutable.ListBuffer
 
-case class UserEntity(id:Long, username:String, password:String, name:String, info:String)
+case class UserEntity(id:Long, var username:String, var password:String, var name:String, var info:String)
 
 object User {
 

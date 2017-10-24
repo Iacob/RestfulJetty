@@ -121,6 +121,37 @@ class User {
     return """ {"ret" : 0, "code" : "success"} """
   }
 
+  @Path("/edit")
+  //@Consumes(Array("application/json"))
+  @Produces(Array("application/json"))
+  @POST
+  def editUserInfo(@Context request:HttpServletRequest):String = {
+    val req = IOUtils.toString(request.getInputStream, StandardCharsets.UTF_8)
+    implicit val formats = DefaultFormats
+    val userInfo = Serialization.read[UserEntity](req)
+
+    val userDb = luoyong.restfuljetty.db.User
+    val userToEditOpt:Option[UserEntity] = userDb.listAllUsers().find((userEntity) => {
+      userEntity.id.longValue == userInfo.id.longValue()
+    })
+
+    if (userToEditOpt.nonEmpty) {
+      val userToEdit = userToEditOpt.get
+      userToEdit.username = userInfo.username
+      userToEdit.password = userInfo.password
+      userToEdit.name = userInfo.name
+      userToEdit.info = userInfo.info
+
+      println(userDb.listAllUsers())
+
+      return """ {"ret" : 0, "code" : "success"} """
+    }else {
+      return """ {"ret" : 1, "code" : "user_not_found", "msg" : "user not found"} """
+    }
+
+
+  }
+
   @Path("/get/{id}")
   //@Consumes(Array("application/json"))
   @Produces(Array("application/json"))
