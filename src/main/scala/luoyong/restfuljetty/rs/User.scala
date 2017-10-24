@@ -46,7 +46,7 @@ class User {
     val userList = ArrayBuffer[Array[String]]()
     val u1 = userDb.userList
     userDb.userList.foreach((userEntity) => {
-      userList += Array(userEntity.username, userEntity.name, userEntity.info, "<input type=\"hidden\" value=\"" + userEntity.id + "\"><span data-toggle=\"modal\" data-target=\"#mm-edit-user-space\">Edit</span>&nbsp;<span data-toggle=\"modal\" data-target=\"#mm-delete-user-dialog\" onclick=\"Public.ui_action_set_user_id_to_delete(this, event);\">Delete</span>")
+      userList += Array(userEntity.username, userEntity.name, userEntity.info, "<input type=\"hidden\" value=\"" + userEntity.id + "\"><span data-toggle=\"modal\" data-target=\"#mm-edit-user-space\" onclick=\"Public.ui_action_show_edit_user_form(this, event);\">Edit</span>&nbsp;<span data-toggle=\"modal\" data-target=\"#mm-delete-user-dialog\" onclick=\"Public.ui_action_set_user_id_to_delete(this, event);\">Delete</span>")
     })
 
     implicit val formats = DefaultFormats
@@ -119,6 +119,29 @@ class User {
     println(userDb.listAllUsers())
 
     return """ {"ret" : 0, "code" : "success"} """
+  }
+
+  @Path("/get/{id}")
+  //@Consumes(Array("application/json"))
+  @Produces(Array("application/json"))
+  @GET
+  def getUserInfo(@PathParam("id") user_id:Long):String = {
+    val userDb = luoyong.restfuljetty.db.User
+    val userInfoOpt:Option[UserEntity] = userDb.listAllUsers().find((userEntity) => {
+      userEntity.id.longValue == user_id.longValue()
+    })
+
+    if (userInfoOpt.nonEmpty) {
+      val resultObj = UserWsResponse(0, "success", "success", userInfoOpt.get)
+      implicit val formats = DefaultFormats
+      val result = Serialization.write(resultObj)
+      return result
+    }else {
+      val resultObj = UserWsResponse(1, "user_not_found", "user not found", None)
+      implicit val formats = DefaultFormats
+      val result = Serialization.write(resultObj)
+      return result
+    }
   }
 
   def extractForm(formStr:String):Map[String, String] = {

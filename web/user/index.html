@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="../res/components/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../res/components/bootstrap/dist/css/bootstrap-theme.css">
   <link rel="stylesheet" type="text/css" href="../res/components/jquery-loading/dist/jquery.loading.min.css">
+  <script type="text/javascript" src="../res/components/stringjs/dist/string.min.js"></script>
   <script type="text/javascript" src="../res/components/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="../res/components/datatables/media/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="../res/components/popper.js/dist/umd/popper.min.js"></script>
@@ -42,7 +43,7 @@
 
   <br />
   <div>
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mm-edit-user-space"> + 增加用户 </button>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mm-edit-user-space" onclick="Public.resetEditUserForm();"> + 增加用户 </button>
   </div>
 
   <div class="modal fade" id="mm-edit-user-space" data-backdrop="static" tabindex="-2" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,6 +57,7 @@
               </div>
               <div class="modal-body">
                   <div class="form-group">
+                      <input type="hidden" id="mm-edit-user-space-user-id">
                       <label for="mm-edit-user-space-username">用户名</label>
                       <input type="text" class="form-control" id="mm-edit-user-space-username" aria-describedby="emailHelp" placeholder="">
                       <div class="invalid-feedback">Please provide a valid username.</div>
@@ -69,7 +71,8 @@
                   <div class="form-group">
                       <label for="mm-edit-user-space-name">用户姓名</label>
                       <input type="text" class="form-control" id="mm-edit-user-space-name" aria-describedby="emailHelp" placeholder="">
-                      <small id="mm-edit-user-space-name-help" class="form-text text-muted invalid-feedback">We'll never share your email with anyone else.</small>
+                      <small id="mm-edit-user-space-name-help" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                      <div class="invalid-feedback">Please provide a valid name.</div>
                   </div>
                   <div class="form-group">
                       <label for="mm-edit-user-space-info">介绍</label>

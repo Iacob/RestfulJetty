@@ -19,7 +19,7 @@ $(function() {
           ]
     });
 
-    $('body').loading({message: "加载中...", start: false, onStart: function(loading){
+    $('body').loading({message: "请等待...", start: false, onStart: function(loading){
         $(".loading-shown").css("z-index", 2000);
         loading.overlay.fadeIn(150);
     }});
@@ -34,6 +34,7 @@ window.Public.refresh = function() {
 }
 window.Public.ui_action_save_user = function() {
     Public.show_loading();
+    Public.clearEditUserFormErrorMessages();
     var postObj = new Object();
     postObj.username = $("#mm-edit-user-space").find("#mm-edit-user-space-username").val();
     postObj.password = $("#mm-edit-user-space").find("#mm-edit-user-space-password").val();
@@ -45,6 +46,39 @@ window.Public.ui_action_save_user = function() {
 
     $.post('../api/user/add', postStr, function(data, textStatus, jqXHR) {
         console.log(data);
+    }, 'json').always(function() {
+        $('#mm-edit-user-space').modal('hide');
+        Public.refresh();
+        Public.hide_loading();
+    });
+}
+window.Public.ui_action_show_edit_user_form = function(element, event) {
+    Public.show_loading();
+    Public.resetEditUserForm();
+//    var postObj = new Object();
+//    postObj.username = $("#mm-edit-user-space").find("#mm-edit-user-space-username").val();
+//    postObj.password = $("#mm-edit-user-space").find("#mm-edit-user-space-password").val();
+//    postObj.name = $("#mm-edit-user-space").find("#mm-edit-user-space-name").val();
+//    postObj.info = $("#mm-edit-user-space").find("#mm-edit-user-space-info").val();
+//
+//    var postStr = JSON.stringify(postObj);
+
+    var user_id = $(element).parent().find('input:hidden').val();
+
+    $.get('../api/user/get/'+user_id, function(data, textStatus, jqXHR) {
+        if (data.ret == 0) {
+            Public.ui_action_show_edit_user_form();
+
+            $("#mm-edit-user-space").find("#mm-edit-user-space-user-id").val(data.data.id);
+            $("#mm-edit-user-space").find("#mm-edit-user-space-username").val(data.data.username);
+            $("#mm-edit-user-space").find("#mm-edit-user-space-password").val(data.data.password);
+            $("#mm-edit-user-space").find("#mm-edit-user-space-name").val(data.data.name);
+            $("#mm-edit-user-space").find("#mm-edit-user-space-info").val(data.data.info);
+
+            $("#mm-edit-user-space").modal('show');
+        }else {
+            alert(data.msg);
+        }
     }, 'json').always(function() {
         $('#mm-edit-user-space').modal('hide');
         Public.refresh();
@@ -73,4 +107,14 @@ window.Public.show_loading = function() {
 }
 window.Public.hide_loading = function() {
     $("body").loading('stop');
+}
+window.Public.resetEditUserForm = function() {
+    Public.clearEditUserFormErrorMessages();
+    $('#mm-edit-user-space').find('input[type="text"]').val('');
+    $('#mm-edit-user-space').find('input[type="password"]').val('');
+    $('#mm-edit-user-space').find('input:hidden').val('');
+}
+window.Public.clearEditUserFormErrorMessages = function() {
+    $('#mm-edit-user-space').find('.is-invalid').removeClass('is-invalid');
+    $('#mm-edit-user-space').find('.invalid-feedback').hide();
 }

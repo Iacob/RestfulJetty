@@ -18,6 +18,8 @@
   ],
   "dependencies": {
     "bootstrap": "4.0.0-beta",
+    "jquery": "",
+    "stringjs": "",
     "jquery-ui": "^1.12.1",
     "datatables-i18n": "^1.0.4",
     "datatables": "datatable#^1.10.16",
