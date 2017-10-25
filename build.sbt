@@ -22,3 +22,5 @@ libraryDependencies += "net.liftweb" % "lift-json_2.12" % "3.1.1"
 libraryDependencies += "commons-io" % "commons-io" % "2.5"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.12" % "3.0.4" % Test
+
+libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.6"
