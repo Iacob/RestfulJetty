@@ -9,6 +9,7 @@ import javax.ws.rs._
 import luoyong.restfuljetty.db.UserEntity
 import net.liftweb.json.{DefaultFormats, Serialization}
 import org.apache.commons.io.IOUtils
+import org.apache.commons.lang3.StringUtils
 
 import collection.JavaConverters._
 import scala.collection.mutable
@@ -25,6 +26,8 @@ class User {
   case class UserDataTable(draw:Long, recordsTotal:Long, recordsFiltered:Long, data:Array[Array[String]])
 
   case class UserWsResponse(ret:Long, code:String, msg:String, data:Any)
+
+  case class UserFieldValidationMessage(field:String, code:String, msg:String)
 
   @Path("/dt-list")
   @Consumes(Array("application/x-www-form-urlencoded"))
@@ -129,6 +132,12 @@ class User {
     val req = IOUtils.toString(request.getInputStream, StandardCharsets.UTF_8)
     implicit val formats = DefaultFormats
     val userInfo = Serialization.read[UserEntity](req)
+
+    if (StringUtils.isBlank(userInfo.username)) {
+      val resultObj = UserWsResponse(1, "validation_error", "", Array(UserFieldValidationMessage("username", "username_must_not_be_blank", "用户名不能为空")))
+      val result = Serialization.write(resultObj)
+      return result
+    }
 
     val userDb = luoyong.restfuljetty.db.User
     val userToEditOpt:Option[UserEntity] = userDb.listAllUsers().find((userEntity) => {

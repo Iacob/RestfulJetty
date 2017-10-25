@@ -25,6 +25,40 @@ $(function() {
     }});
 })
 
+function handleServerMessage(data, successCallback, failCallback, showFieldError) {
+    if (data.ret == 0) {
+        if (successCallback) {
+            successCallback(data);
+        }
+    }else {
+        if (failCallback) {
+            failCallback(data, showFieldError);
+        }
+    }
+}
+
+function handleServerErrorMessage(data, showFieldErrorCall) {
+    if (data.data == null) {
+        return;
+    }
+
+    if (!showFieldErrorCall) {
+        return;
+    }
+
+    $(data.data).each(function(idx, field_msg) {
+        console.log(field_msg.field);
+        console.log(field_msg.msg);
+        showFieldErrorCall(field_msg);
+    })
+}
+
+function showUserEditFormError(field_msg) {
+    $("#mm-edit-user-space").find('#mm-edit-user-space-' + field_msg.field).addClass('is-invalid');
+    $("#mm-edit-user-space").find('#mm-edit-user-space-' + field_msg.field).parent().find('.invalid-feedback').show();
+    $("#mm-edit-user-space").find('#mm-edit-user-space-' + field_msg.field).parent().find('.invalid-feedback').html(field_msg.msg);
+}
+
 window.Public = new Object();
 window.Public.reload = function() {
     $('#example').DataTable().ajax.reload(null, true);
@@ -57,9 +91,13 @@ window.Public.ui_action_save_user = function() {
             postObj.id = user_id;
             var postStr = JSON.stringify(postObj);
             $.post('../api/user/edit', postStr, function(data, textStatus, jqXHR) {
-                console.log(data);
+                //console.log(data);
+                handleServerMessage(data, function(){
+                        $('#mm-edit-user-space').modal('hide');
+                        console.log(data);
+                    }, handleServerErrorMessage, showUserEditFormError);
             }, 'json').always(function() {
-                $('#mm-edit-user-space').modal('hide');
+                //$('#mm-edit-user-space').modal('hide');
                 Public.refresh();
                 Public.hide_loading();
             });
